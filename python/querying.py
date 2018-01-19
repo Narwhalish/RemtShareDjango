@@ -10,22 +10,6 @@ def create_connection(database):
     
     return None
 
-def create_house_database():
-    house1 = [1, 'Maylin', 'Morgan', 5000, 110]
-    house2 = [2, 'Bryan', 'Marlboro', 6000, 120]
-    house3 = [3, 'Zach', 'Holmdel', 7000, 130]
-    add_house(house1)
-    add_house(house2)
-    add_house(house3)
-
-def create_user_database():
-    user1 = [1, 'Maylin', 'Myanmar', 'mahorchler@ctemc.org', [2,3]]
-    user2 = [2, 'Bryan', 'Georgia', 'bryao@ctemc.org', [1,2]]
-    user3 = [3, 'Zach', 'United States', 'zaglasser@ctemc.org', [1,2,3]]
-    add_user(user1)
-    add_user(user2)
-    add_user(user3)
-
 def add_house(house):
     connection = create_connection('houses.db')
     cursor = connection.cursor()
@@ -42,4 +26,22 @@ def add_user(user):
             format(ID = user[0], username = user[1], password = user[2], email = user[3], lst = user[4]))
     
     connection.commit()
+    connection.close()
+
+def get_user_information(id_number):
+    connection = create_connection('users.db')
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM users WHERE ID = {idn}'.format(idn=id_number))
+    information = cursor.fetchall()
+    print information
+    
+    connection.close()
+
+def get_houses_by_seller(seller):
+    connection = create_connection('users.db')
+    cursor = connection.cursor()
+    cursor.execute('SELECT (House) FROM houses WHERE Seller={s}'.format(s = seller))
+    information = cursor.fetchall()
+    print information
+    
     connection.close()
