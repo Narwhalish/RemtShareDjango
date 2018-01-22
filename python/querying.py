@@ -1,46 +1,44 @@
 import sqlite3
-from sqlite3 import Error
 
 def create_connection(database):
-    try:
-        connection = sqlite3.connect(database)
-        return connection
-    except Error as error:
-        print error
-    
-    return None
+    connection = sqlite3.connect(database)
+    return connection
 
 def add_house(house):
-    connection = create_connection('houses.db')
+    connection = create_connection('data.db')
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO houses (House, Seller, Location, Price, Size) VALUES ({ID},{seller},{location},{price},{size})".\
-            format(ID = house[0], seller = house[1], location = house[2], price = house[3], size = house[4]))
+    cursor.execute("INSERT INTO houses (House, Seller, Location, Price, Size) VALUES (?,?,?,?,?)",(house[0],house[1],house[2],house[3],house[4]))
     
     connection.commit()
     connection.close()
     
 def add_user(user):
-    connection = create_connection('users.db')
+    connection = create_connection('data.db')
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO users (ID, Username, Password, Email, Associated Houses) VALUES ({ID},{username},{password},{email},{lst})".\
-            format(ID = user[0], username = user[1], password = user[2], email = user[3], lst = user[4]))
+    cursor.execute("INSERT INTO users (ID, Username, Password, Email, Associated Houses) VALUES (?,?,?,?,?)",(user[0], user[1], user[2], user[3], user[4]))
     
     connection.commit()
     connection.close()
 
+def edit_user_information():
+    return 'null'
+    
+def edit_house_information():
+    return 'null'
+
 def get_user_information(id_number):
-    connection = create_connection('users.db')
+    connection = create_connection('data.db')
     cursor = connection.cursor()
-    cursor.execute('SELECT * FROM users WHERE ID = {idn}'.format(idn=id_number))
+    cursor.execute('SELECT * FROM users WHERE Username = ?',(id_number,))
     information = cursor.fetchall()
     print information
     
     connection.close()
 
 def get_houses_by_seller(seller):
-    connection = create_connection('users.db')
+    connection = create_connection('data.db')
     cursor = connection.cursor()
-    cursor.execute('SELECT (House) FROM houses WHERE Seller={s}'.format(s = seller))
+    cursor.execute('SELECT (House) FROM houses WHERE Seller=?',(seller,))
     information = cursor.fetchall()
     print information
     
