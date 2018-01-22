@@ -1,3 +1,45 @@
+/*!
+ * Start Bootstrap - Thumbnail Gallery (https://startbootstrap.com/template-overviews/thumbnail-gallery)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-thumbnail-gallery/blob/master/LICENSE)
+ */
+
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+.navbar-blue {
+	color:#0c86f2;
+	background-color: #0c86f2;
+}
+
+.bg-blue {
+	color:#fff;
+	background-color: #0c86f2;
+}
+
+.navbar-white{
+	color:#fff;
+}
+
+.navbar-toggler-icon{
+	background-color: #fff
+	color: rgba(255, 255, 255, 0.5);
+  	border-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link{
+	color:#fff;
+}
+
+.navbar-toggler-icon{
+	color:#fff;
+}
 /*! * Start Bootstrap - Creative v4.0.0-beta.2 (https://startbootstrap.com/template-overviews/creative) * Copyright 2013-2017 Start Bootstrap * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-creative/blob/master/LICENSE) */
 body,html{
     width:100%;
@@ -252,4 +294,8 @@ header.masthead p{
 }
 .btn-primary:active,.btn-primary:focus{
     box-shadow:0 0 0 .2rem rgba(240,95,64,.5)!important
+}
+
+.container .my-4 .text-center .text-lg-left{
+	color:#0c86f2;
 }
