@@ -5,12 +5,12 @@
  */
 
 body {
-  padding-top: 54px;
+  padding-top: 0px;
 }
 
 @media (min-width: 992px) {
   body {
-    padding-top: 56px;
+    padding-top: 0px;
   }
 }
 .navbar-blue {
@@ -19,26 +19,26 @@ body {
 }
 
 .bg-blue {
-	color:#fff;
+	color:#0c86f2;
 	background-color: #0c86f2;
 }
 
 .navbar-white{
-	color:#fff;
+	color:#0c86f2;
 }
 
 .navbar-toggler-icon{
-	background-color: #fff
+	background-color: #0c86f2
 	color: rgba(255, 255, 255, 0.5);
   	border-color: rgba(255, 255, 255, 0.1);
 }
 
 .nav-link{
-	color:#fff;
+	color:#0c86f2;
 }
 
 .navbar-toggler-icon{
-	color:#fff;
+	color:#0c86f2;
 }
 /*! * Start Bootstrap - Creative v4.0.0-beta.2 (https://startbootstrap.com/template-overviews/creative) * Copyright 2013-2017 Start Bootstrap * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-creative/blob/master/LICENSE) */
 body,html{
@@ -54,7 +54,7 @@ hr{
     border-color:#0c86f2
 }
 hr.light{
-    border-color:#fff
+    border-color:#0c86f2
 }
 a{
     color:#0c86f2;
@@ -75,7 +75,7 @@ h1,h2,h3,h4,h5,h6{
     background-color:#212529!important
 }
 .text-faded{
-    color:rgba(255,255,255,.7)
+    color:#0c86f2;
 }
 section{
     padding:8rem 0
@@ -84,29 +84,29 @@ section{
     margin-top:0
 }
 ::-moz-selection{
-    color:#fff;
+    color:#0c86f2;
     background:#212529;
     text-shadow:none
 }
 ::selection{
-    color:#fff;
+    color:#0c86f2;
     background:#212529;
     text-shadow:none
 }
 img::selection{
-    color:#fff;
+    color:#0c86f2;
     background:0 0
 }
 img::-moz-selection{
-    color:#fff;
+    color:#0c86f2;
     background:0 0
 }
 body{
-    -webkit-tap-highlight-color:#212529
+    color:#0c86f2;
 }
 #mainNav{
     border-bottom:1px solid rgba(33,37,41,.1);
-    background-color:#fff;
+    background-color:#0c86f2;
     font-family:'Open Sans','Helvetica Neue',Arial,sans-serif;
     -webkit-transition:all .2s;
     -moz-transition:all .2s;
@@ -125,10 +125,10 @@ body{
     font-size:.9rem;
     font-weight:700;
     text-transform:uppercase;
-    color:#212529
+    color:#000000
 }
 #mainNav .navbar-nav>li.nav-item>a.nav-link:focus:hover,#mainNav .navbar-nav>li.nav-item>a.nav-link:hover{
-    color:#0c86f2
+    color:#212529
 }
 #mainNav .navbar-nav>li.nav-item>a.nav-link.active,#mainNav .navbar-nav>li.nav-item>a.nav-link:focus.active{
     color:#0c86f2!important;
@@ -143,23 +143,23 @@ body{
         background-color:transparent
     }
     #mainNav .navbar-brand{
-        color:rgba(255,255,255,.7)
+        color:#0c86f2
     }
     #mainNav .navbar-brand:focus,#mainNav .navbar-brand:hover{
-        color:#fff
+        color:#0c86f2
     }
     #mainNav .navbar-nav>li.nav-item>a.nav-link{
         padding:.5rem 1rem
     }
     #mainNav .navbar-nav>li.nav-item>a.nav-link,#mainNav .navbar-nav>li.nav-item>a.nav-link:focus{
-        color:rgba(255,255,255,.7)
+        color:#0c86f2;
     }
     #mainNav .navbar-nav>li.nav-item>a.nav-link:focus:hover,#mainNav .navbar-nav>li.nav-item>a.nav-link:hover{
-        color:#fff
+        color:#0c86f2
     }
     #mainNav.navbar-shrink{
         border-bottom:1px solid rgba(33,37,41,.1);
-        background-color:#fff
+        background-color:#0c86f2
     }
     #mainNav.navbar-shrink .navbar-brand{
         color:#0c86f2
@@ -232,7 +232,7 @@ header.masthead p{
     height:100%;
     text-align:center;
     opacity:0;
-    color:#fff;
+    color:#0c86f2;
     background:rgba(240,95,64,.9);
     -webkit-transition:all .2s;
     -moz-transition:all .2s;
@@ -289,13 +289,9 @@ header.masthead p{
     border-color:#0c86f2
 }
 .btn-primary:active,.btn-primary:focus,.btn-primary:hover{
-    color:#fff;
+    color:#0c86f2;
     background-color:#0c86f2!important
 }
 .btn-primary:active,.btn-primary:focus{
     box-shadow:0 0 0 .2rem rgba(240,95,64,.5)!important
-}
-
-.container .my-4 .text-center .text-lg-left{
-	color:#0c86f2;
 }
