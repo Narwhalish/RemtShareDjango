@@ -5,35 +5,6 @@ def create_connection(database):
     connection = sqlite3.connect(database)
     return connection
 
-def create_house_database():
-    connection = create_connection('data.db')
-    cursor = connection.cursor()
-    cursor.execute('CREATE TABLE HousesForSale (House TEXT PRIMARY KEY, Seller TEXT, Address TEXT, Price INTEGER, Size INTEGER, Bedrooms INTEGER, Bath INTEGER, Description TEXT, Investors TEXT, Image TEXT, Images TEXT)')
-    saleHousesIds = [str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4())]
-    house1 = [saleHousesIds[0], 'Maylin', 'Morgan', '5000', '110']
-    house2 = [saleHousesIds[1], 'Bryan', 'Marlboro', '6000', '120']
-    house3 = [saleHousesIds[2], 'Zach', 'Holmdel', '7000', '130']
-    house4 = [saleHousesIds[3], 'Maylin', 'Morgan', '5000', '110']
-    house5 = [saleHousesIds[3], 'Maylin', 'Morgan', '5000', '110']
-    house6 = [saleHousesIds[3], 'Maylin', 'Morgan', '5000', '110']
-    house7 = [saleHousesIds[3], 'Maylin', 'Morgan', '5000', '110']
-    house8 = [saleHousesIds[3], 'Maylin', 'Morgan', '5000', '110']
-    house9 = [saleHousesIds[3], 'Maylin', 'Morgan', '5000', '110']
-    house0 = [saleHousesIds[3], 'Maylin', 'Morgan', '5000', '110']
-    add_house(house1)
-    add_house(house2)
-    add_house(house3)
-    add_house(house4)
-    add_house(house5)
-    add_house(house6)
-    add_house(house7)
-    add_house(house8)
-    add_house(house9)
-    add_house(house0)
-    
-    connection.commit()
-    connection.close()
-
 def create_user_database():
     connection = create_connection('data.db')
     cursor = connection.cursor()
@@ -63,19 +34,113 @@ def create_user_database():
     connection.commit()
     connection.close()
 
-def add_house(house):
+def create_house_database():
     connection = create_connection('data.db')
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO houses (House,Seller,Location,Price,Size) VALUES (?, ?, ?, ?, ?)", (house[0], house[1], house[2], house[3], house[4]))
+    cursor.execute('CREATE TABLE HousesForSale (House TEXT PRIMARY KEY, Seller TEXT, Address TEXT, Price INTEGER, Size INTEGER, Bedrooms INTEGER, Bath REAL, Description TEXT, Investors TEXT, Image TEXT, Images TEXT)')
+    cursor.execute('SELECT ID FROM users')
+    peopleIds = cursor.fetchall()
 
+    Maylin = ''
+    Bryan = ''
+    Zach = ''
+    Anna = ''
+    Karena = ''
+    Sathya = ''
+
+    for idee in peopleIds:
+        cursor.execute('SELECT Username FROM users WHERE ID = ?',(idee[0],))
+        username = cursor.fetchall()
+        cursor.execute('SELECT Password FROM users WHERE ID = ?',(idee[0],))
+        password = cursor.fetchall()
+        if str(username[0])[3:-3] == 'Maylin':
+            Maylin = idee[0]
+        if str(username[0])[3:-3] == 'Bryan':
+            Bryan = idee[0]
+        if str(username[0])[3:-3] == 'Zach' and str(password[0])[3:-3] == '345678':
+            Zach = idee[0]
+        if str(username[0])[3:-3] == 'Anna':
+            Anna = idee[0]
+        if str(username[0])[3:-3] == 'Karena':
+            Karena = idee[0]
+        if str(username[0])[3:-3] == 'Sathya':
+            Sathya = idee[0]
+        
+    saleHousesIds = [str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4())]    
+    house1 = [saleHousesIds[0], Maylin, '240 Deerfield Rd, Morganville, NJ, 07751', 1000000, 4200, 5, 4.5, 'This is my house.','','','']
+    house2 = [saleHousesIds[1], Zach, '1912 Wilcox Avenue, Monterey Park, CA, 91755', 600000, 3100, 3, 2.5, 'This is my first house in California.','','','']
+    house3 = [saleHousesIds[2], Zach, '1909 Oakgate St, Monterey Park, CA, 91755', 650000, 3100, 3, 3, 'This is my second house in California.','','','']
+    house4 = [saleHousesIds[3], Bryan, '8 Merrill Rd, Marlboro, NJ, 07746', 750000, 3000, 3, 2.5, 'This is a house in Marlboro.','','','']
+    house5 = [saleHousesIds[4], Bryan, '6 Merrill Rd, Marlboro, NJ, 07746', 800000, 3200, 3, 3, 'This is a second house in Marlboro.','','','']
+    house6 = [saleHousesIds[5], Bryan, '4 Merrill Rd, Marlboro, NJ, 07746', 850000, 3400, 4, 3.5, 'This is a third house in Marlboro.','','','']
+    house7 = [saleHousesIds[6], Anna, '2 Vernon Rd, Marlboro, NJ, 07746', 900000, 3600, 4, 4, 'This is Anna\'s old house in Marlboro.','','','']
+    house8 = [saleHousesIds[7], Maylin, '1 Menzel Lane, Holmdel, NJ, 07733', 600000, 2800, 3, 2.5, 'This is my old house.','','','']
+    house9 = [saleHousesIds[8], Karena, '85-44 Homelawn St, Jamaica, NY, 11432', 1250000, 3000, 3, 2.5, 'This is a house in New York.','','','']
+    house0 = [saleHousesIds[9], Sathya, '407 Centerville St, Middleburg, PA, 17842', 500000, 2900, 3, 3, 'This is a house in Pennsylvania.','','','']
+    add_house(house1)
+    add_house(house2)
+    add_house(house3)
+    add_house(house4)
+    add_house(house5)
+    add_house(house6)
+    add_house(house7)
+    add_house(house8)
+    add_house(house9)
+    add_house(house0)
+    
     connection.commit()
     connection.close()
-    
+
 def add_user(user):
     connection = create_connection('data.db')
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO users (ID, Username, First, Last, Password, Email, Bio, Image, Selling, Invested, Looking, Balance) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",(user[0],user[1],user[2],user[3],user[4]/
+    cursor.execute("INSERT INTO users (ID, Username, First, Last, Password, Email, Bio, Image, Selling, Invested, Looking, Balance) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",(user[0],user[1],user[2],user[3],user[4],\
                     user[5],user[6],user[7],user[8],user[9],user[10],user[11]))
+    
+    connection.commit()
+    connection.close()
+
+def add_house(house):
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO HousesForSale (House, Seller, Address, Price, Size, Bedrooms, Bath, Description, Investors, Image, Images) VALUES (?,?,?,?,?,?,?,?,?,?,?)", (house[0], house[1], house[2],\
+                    house[3], house[4], house[5], house[6], house[7], house[8], house[9], house[10]))
+
+    connection.commit()
+    connection.close()
+
+def add_new_user(user):
+    ID = str(uuid.uuid4())
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO users (ID, Username, First, Last, Password, Email, Bio, Image, Selling, Invested, Looking, Balance) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",(ID,user[0],user[1],user[2],user[3],\
+                    user[4],user[5],ID + '.img',user[6],user[7],user[8],user[9]))
+    
+    connection.commit()
+    connection.close()
+
+def add_new_house(house):
+    ID = str(uuid.uuid4())
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO HousesForSale (House, Seller, Address, Price, Size, Bedrooms, Bath, Description, Investors, Image, Images) VALUES (?,?,?,?,?,?,?,?,?,?,?)",(ID,house[0],house[1],house[2],house[3],\
+                    house[4],house[5],house[6],house[7],ID + '.img',''))
+    
+    connection.commit()
+    connection.close()
+
+def delete_user(ID):
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM users WHERE ID=?",(ID,))
+    
+    connection.commit()
+    connection.close()
+
+def delete_house(ID):
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM HousesForSale WHERE House=?",(ID,))
     
     connection.commit()
     connection.close()
