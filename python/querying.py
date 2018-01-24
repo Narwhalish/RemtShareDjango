@@ -105,7 +105,7 @@ def add_new_house(house):
     connection = create_connection('data.db')
     cursor = connection.cursor()
     cursor.execute("INSERT INTO HousesForSale (House, Seller, Address, Price, Size, Bedrooms, Bath, Description, Investors, Image, Images) VALUES (?,?,?,?,?,?,?,?,?,?,?)",(ID,house[0],house[1],house[2],house[3],\
-                    house[4],house[5],house[6],house[7],ID + '.img',''))
+                    house[4],house[5],house[6],'',ID + '.img',''))
     
     connection.commit()
     connection.close()
