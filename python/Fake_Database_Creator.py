@@ -108,3 +108,39 @@ def add_house(house):
 
     connection.commit()
     connection.close()
+
+def add_new_user(user):
+    ID = str(uuid.uuid4())
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO users (ID, Username, First, Last, Password, Email, Bio, Image, Selling, Invested, Looking, Balance) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",(ID,user[0],user[1],user[2],user[3],\
+                    user[4],user[5],ID + '.img',user[6],user[7],user[8],user[9]))
+    
+    connection.commit()
+    connection.close()
+
+def add_new_house(house):
+    ID = str(uuid.uuid4())
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO HousesForSale (House, Seller, Address, Price, Size, Bedrooms, Bath, Description, Investors, Image, Images) VALUES (?,?,?,?,?,?,?,?,?,?,?)",(ID,house[0],house[1],house[2],house[3],\
+                    house[4],house[5],house[6],house[7],ID + '.img',''))
+    
+    connection.commit()
+    connection.close()
+
+def delete_user(ID):
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM users WHERE ID=?",(ID,))
+    
+    connection.commit()
+    connection.close()
+
+def delete_house(ID):
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM HousesForSale WHERE House=?",(ID,))
+    
+    connection.commit()
+    connection.close()
