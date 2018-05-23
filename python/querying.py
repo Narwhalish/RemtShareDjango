@@ -6,36 +6,6 @@ def create_connection(database):
     connection = sqlite3.connect(database)
     return connection
 
-def login(username, password):
-    """
-        Receives username and password.
-        Checks to see if username and password are associated with the same UUID.
-        If so, returns all information of the user.
-        If not, returns false.
-        Uses current directory.
-    """
-    #Get Connection
-    connection = create_connection('data.db')
-    cursor = connection.cursor()
-    
-    #Fetch all passwords associated with given username
-    cursor.execute('SELECT Password FROM users WHERE Username = ?',(username,))
-    passwords = cursor.fetchall()
-    
-    for word in passwords:
-        #If one of the passwords corresponds with the given password, return the information of the user
-        if word[0] == password:
-            cursor.execute('SELECT * FROM users WHERE Username = ? AND Password = ?',(username,password))
-            user_information = cursor.fetchall()
-            connection.close()
-            return user_information
-        
-    #Close connection
-    connection.close()
-    
-    #Return False if username and password don't match up
-    return False
-
 def get_all_houses():
     """
         Returns ID's of all houses.
@@ -53,6 +23,15 @@ def get_all_houses():
     connection.close()
     
     return information
+
+def get_all_users():
+    #Get Connection
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    
+    cursor.execute('SELECT ID FROM users')
+    peopleIds = cursor.fetchall()
+    print peopleIds
 
 def get_house_information(house_id):
     """
