@@ -128,6 +128,12 @@ def edit_house_information(house_id, parameter, new_value):
     connection.commit()
     connection.close()
 
+def new_investment(user, house):
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    #must get existing houses and add house to that list
+    cursor.execute('UPDATE HousesForSale SET Invested=? WHERE User = ?',(house,user))
+
 def add_new_user(user):
     """
         Receives list of information regarding a new user.
