@@ -247,6 +247,21 @@ def sell_investment(investment):
     connection.commit()
     connection.close()
 
+def get_investments_for_sale():
+    #Get Connection
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    
+    #get investments
+    cursor.execute('SELECT * FROM selling')
+    investments = cursor.fetchall()
+    
+    #Close connection
+    connection.close()
+    
+    return investments
+
+
 def sold(newUser, investment):
     #Get Connection
     connection = create_connection('data.db')
