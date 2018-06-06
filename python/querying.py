@@ -247,6 +247,17 @@ def sell_investment(investment):
     connection.commit()
     connection.close()
 
+def remove_from_selling(investment):
+    #Get Connection
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    
+    cursor.execute('DELETE FROM selling WHERE ID = ?',(investment))
+    
+    #Save and close connection
+    connection.commit()
+    connection.close()
+
 def get_investments_for_sale():
     #Get Connection
     connection = create_connection('data.db')
