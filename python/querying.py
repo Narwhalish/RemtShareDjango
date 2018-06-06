@@ -252,7 +252,8 @@ def sold(newUser, investment):
     connection = create_connection('data.db')
     cursor = connection.cursor()
     
-    #Get old owner of investment, remove investment from their list
+    #Delete from selling, get old owner of investment, remove investment from their list
+    cursor.execute('DELETE FROM selling (ID) VALUES (?)',(investment))
     cursor.execute('SELECT userID FROM investments WHERE ID = ?',(investment))
     oldUser = cursor.fetchall()
     remove_user_investment(oldUser, investment)
