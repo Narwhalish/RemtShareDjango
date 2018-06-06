@@ -6,6 +6,23 @@ def create_connection(database):
     connection = sqlite3.connect(database)
     return connection
 
+def login(user_id):
+    """
+        Checks to see if person logging in is regular user
+        Otherwise direct to information page
+        Returns user's information as list
+        Otherwise returns False
+        Uses current directory.
+    """ 
+    #Get list of all users
+    ids = get_all_users()
+    
+    #Check whether or not the user has logged in before
+    if user_id in ids:
+        return get_user_information(user_id)
+    else:
+        return False
+        
 def get_all_houses():
     """
         Returns ID's of all houses.
@@ -31,7 +48,10 @@ def get_all_users():
     
     cursor.execute('SELECT ID FROM users')
     peopleIds = cursor.fetchall()
-    print peopleIds
+    return peopleIds
+    
+    #Close connection
+    connection.close()
 
 def get_house_information(house_id):
     """
@@ -128,25 +148,7 @@ def edit_house_information(house_id, parameter, new_value):
     connection.commit()
     connection.close()
 
-def new_user_investment(user, house):
-    """
-       Receives the ID of a user and house.
-       Changes the houses invested in for that user - adds new house to list
-       Uses current directory.
-    """
-    #Get Connection
-    connection = create_connection('data.db')
-    cursor = connection.cursor()
-    
-    #Get existing houses invested in
-    cursor.execute('SELECT Invested FROM users WHERE User = ?',(user))
-    information = cursor.fetchall()
-    
-    #Add the new house to the list of existing houses
-    information = information + ',' + house
-    cursor.execute('UPDATE users SET Invested = ? WHERE User = ?',(information,user))
-
-def new_house_investment(user, house, amount):
+def new_investment(user, house, amount):
     """
        Receives the ID of a user, house, and amount.
        Changes the invested users for that house - adds user to list of invested users.
@@ -157,23 +159,31 @@ def new_house_investment(user, house, amount):
     connection = create_connection('data.db')
     cursor = connection.cursor()
     
-    #Get existing investors invested in house
-    cursor.execute('SELECT Investors FROM HousesForSale WHERE House = ?',(house))
-    investors = cursor.fetchall()
+    #create investment
+    uid = str(uuid.uuid4())
+    cursor.execute('INSERT INTO investments (ID, UserID, HouseID, Amount) VALUES (?,?,?,?)',(uid, user, house, amount))
     
-    #Add new investor to existing investors
-    investors = investors + ',' + user
-    cursor.execute('UPDATE HousesForSale SET Investors = ? WHERE House = ?',(investors,house))
+    #Get existing investments in house
+    cursor.execute('SELECT Investments FROM HousesForSale WHERE House = ?',(house))
+    investments = cursor.fetchall()
     
-    #Get existing amounts invested in house
-    cursor.execute('SELECT Invested FROM HousesForSale WHERE House = ?',(house))
-    invested = cursor.fetchall()
+    #Add new investment to existing investments
+    investments = investments + ',' + uid
+    cursor.execute('UPDATE HousesForSale SET Investments = ? WHERE House = ?',(investments,house))
     
-    #Add new amount to existing amounts
-    invested = invested + ',' + amount
-    cursor.execute('UPDATE HousesForSale SET Invested = ? WHERE House = ?',(invested,house))
+    #Get existing investments user made
+    cursor.execute('SELECT Invested FROM users WHERE User = ?',(user))
+    information = cursor.fetchall()
+    
+    #Add the new investment to existing investments
+    information = information + ',' + uuid
+    cursor.execute('UPDATE users SET Invested = ? WHERE User = ?',(information,user))
+    
+    #Save and close connection
+    connection.commit()
+    connection.close()
 
-def remove_user_investment(user, rehouse):
+def remove_user_investment(user, reinvestment):
     """
        Receives the ID of a user and house.
        Changes the houses invested in for that user - remove house from list
@@ -188,14 +198,18 @@ def remove_user_investment(user, rehouse):
     information = cursor.fetchall()
     
     #Delete the house from the list of existing houses
-    houses = information.split(',')
-    houses.remove(rehouse)
+    investments = information.split(',')
+    investments.remove(reinvestment)
     newInformation = ''
-    for house in houses:
-        newInformation += house + ','
+    for investment in investments:
+        newInformation += investment + ','
     cursor.execute('UPDATE users SET Invested = ? WHERE User = ?',(newInformation,user))
+    
+    #Save and close connection
+    connection.commit()
+    connection.close()
 
-def remove_house_investment(reuser, house, reamount):
+def remove_house_investment(reinvestment, house, reamount):
     """
        Receives the ID of a user, house, and amount.
        Changes the invested users for that house - removes user from list of invested users.
@@ -207,28 +221,56 @@ def remove_house_investment(reuser, house, reamount):
     cursor = connection.cursor()
     
     #Get existing investors invested in house
-    cursor.execute('SELECT Investors FROM HousesForSale WHERE House = ?',(house))
-    investors = cursor.fetchall()
+    cursor.execute('SELECT Investments FROM HousesForSale WHERE House = ?',(house))
+    investments = cursor.fetchall()
     
     #Remove investor from existing investors
-    investors = investors.split(',')
-    investors.remove(reuser)
-    newInvestors = ''
-    for investor in investors:
-        newInvestors += investor + ','
-    cursor.execute('UPDATE HousesForSale SET Investors = ? WHERE House = ?',(newInvestors,house))
+    investments = investments.split(',')
+    investments.remove(reinvestment)
+    newInvestments = ''
+    for investment in investments:
+        newInvestments += investment + ','
+    cursor.execute('UPDATE HousesForSale SET Investments = ? WHERE House = ?',(newInvestments,house))
     
-    #Get existing amounts invested in house
-    cursor.execute('SELECT Invested FROM HousesForSale WHERE House = ?',(house))
-    invested = cursor.fetchall()
+    #Save and close connection
+    connection.commit()
+    connection.close()
+
+def sell_investment(investment):
+    #Get Connection
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
     
-    #Remove amount from existing amounts
-    invested = invested.split(',')
-    invested.remove(reamount)
-    newInvested = ''
-    for invest in invested:
-        newInvested += invest + ','
-    cursor.execute('UPDATE HousesForSale SET Invested = ? WHERE House = ?',(newInvested,house))
+    cursor.execute('INSERT INTO selling (ID) VALUES (?)',(investment))
+    
+    #Save and close connection
+    connection.commit()
+    connection.close()
+
+def sold(newUser, investment):
+    #Get Connection
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    
+    #Get old owner of investment, remove investment from their list
+    cursor.execute('SELECT userID FROM investments WHERE ID = ?',(investment))
+    oldUser = cursor.fetchall()
+    remove_user_investment(oldUser, investment)
+    
+    #update investment with new user
+    cursor.execute('UPDATE investments SET UserID = ? WHERE ID = ?',(newUser, investment))
+    
+    #Get existing investments from new user
+    cursor.execute('SELECT Invested FROM users WHERE User = ?',(newUser))
+    information = cursor.fetchall()
+    
+    #Add the new investment to the list of existing investments
+    information = information + ',' + investment
+    cursor.execute('UPDATE users SET Invested = ? WHERE User = ?',(information,newUser))  
+    
+    #Save and close connection
+    connection.commit()
+    connection.close()
 
 def add_new_user(user):
     """

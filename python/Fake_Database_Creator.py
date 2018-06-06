@@ -59,7 +59,7 @@ def create_house_database():
     cursor = connection.cursor()
     
     #Create Table of HousesForSale
-    cursor.execute('CREATE TABLE HousesForSale (House TEXT PRIMARY KEY, Seller TEXT, Address TEXT, Price INTEGER, Size INTEGER, Bedrooms INTEGER, Bath REAL, Description TEXT, Investors TEXT, Invested TEXT, Image TEXT, Images TEXT)')
+    cursor.execute('CREATE TABLE HousesForSale (House TEXT PRIMARY KEY, Seller TEXT, Address TEXT, Price INTEGER, Size INTEGER, Bedrooms INTEGER, Bath REAL, Description TEXT, Investments TEXT, Image TEXT, Images TEXT)')
     
     #Get User ID's
     cursor.execute('SELECT ID FROM users')
@@ -76,16 +76,16 @@ def create_house_database():
     #Generate UUID's for the houses    
     saleHousesIds = [str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4()),str(uuid.uuid4())]    
     #Hardcode house information
-    house1 = [saleHousesIds[0], Maylin, '240 Deerfield Rd, Morganville, NJ, 07751', 1000000, 4200, 5, 4.5, 'This is my house.','','','','']
-    house2 = [saleHousesIds[1], Zach, '1912 Wilcox Avenue, Monterey Park, CA, 91755', 600000, 3100, 3, 2.5, 'This is my first house in California.','','','','']
-    house3 = [saleHousesIds[2], Zach, '1909 Oakgate St, Monterey Park, CA, 91755', 650000, 3100, 3, 3, 'This is my second house in California.','','','','']
-    house4 = [saleHousesIds[3], Bryan, '8 Merrill Rd, Marlboro, NJ, 07746', 750000, 3000, 3, 2.5, 'This is a house in Marlboro.','','','','']
-    house5 = [saleHousesIds[4], Bryan, '6 Merrill Rd, Marlboro, NJ, 07746', 800000, 3200, 3, 3, 'This is a second house in Marlboro.','','','','']
-    house6 = [saleHousesIds[5], Bryan, '4 Merrill Rd, Marlboro, NJ, 07746', 850000, 3400, 4, 3.5, 'This is a third house in Marlboro.','','','','']
-    house7 = [saleHousesIds[6], Anna, '2 Vernon Rd, Marlboro, NJ, 07746', 900000, 3600, 4, 4, 'This is Anna\'s old house in Marlboro.','','','','']
-    house8 = [saleHousesIds[7], Maylin, '1 Menzel Lane, Holmdel, NJ, 07733', 600000, 2800, 3, 2.5, 'This is my old house.','','','','']
-    house9 = [saleHousesIds[8], Karena, '85-44 Homelawn St, Jamaica, NY, 11432', 1250000, 3000, 3, 2.5, 'This is a house in New York.','','','','']
-    house0 = [saleHousesIds[9], Sathya, '407 Centerville St, Middleburg, PA, 17842', 500000, 2900, 3, 3, 'This is a house in Pennsylvania.','','','','']
+    house1 = [saleHousesIds[0], Maylin, '240 Deerfield Rd, Morganville, NJ, 07751', 1000000, 4200, 5, 4.5, 'This is my house.','','','']
+    house2 = [saleHousesIds[1], Zach, '1912 Wilcox Avenue, Monterey Park, CA, 91755', 600000, 3100, 3, 2.5, 'This is my first house in California.','','','']
+    house3 = [saleHousesIds[2], Zach, '1909 Oakgate St, Monterey Park, CA, 91755', 650000, 3100, 3, 3, 'This is my second house in California.','','','']
+    house4 = [saleHousesIds[3], Bryan, '8 Merrill Rd, Marlboro, NJ, 07746', 750000, 3000, 3, 2.5, 'This is a house in Marlboro.','','','']
+    house5 = [saleHousesIds[4], Bryan, '6 Merrill Rd, Marlboro, NJ, 07746', 800000, 3200, 3, 3, 'This is a second house in Marlboro.','','','']
+    house6 = [saleHousesIds[5], Bryan, '4 Merrill Rd, Marlboro, NJ, 07746', 850000, 3400, 4, 3.5, 'This is a third house in Marlboro.','','','']
+    house7 = [saleHousesIds[6], Anna, '2 Vernon Rd, Marlboro, NJ, 07746', 900000, 3600, 4, 4, 'This is Anna\'s old house in Marlboro.','','','']
+    house8 = [saleHousesIds[7], Maylin, '1 Menzel Lane, Holmdel, NJ, 07733', 600000, 2800, 3, 2.5, 'This is my old house.','','','']
+    house9 = [saleHousesIds[8], Karena, '85-44 Homelawn St, Jamaica, NY, 11432', 1250000, 3000, 3, 2.5, 'This is a house in New York.','','','']
+    house0 = [saleHousesIds[9], Sathya, '407 Centerville St, Middleburg, PA, 17842', 500000, 2900, 3, 3, 'This is a house in Pennsylvania.','','','']
     #Create houses
     add_house(house1)
     add_house(house2)
@@ -133,6 +133,33 @@ def add_house(house):
     #Add information to database
     cursor.execute("INSERT INTO HousesForSale (House, Seller, Address, Price, Size, Bedrooms, Bath, Description, Investors, Image, Images) VALUES (?,?,?,?,?,?,?,?,?,?,?)", (house[0], house[1], house[2],\
                     house[3], house[4], house[5], house[6], house[7], house[8], house[9], house[10]))
+    
+    #Save and close connection
+    connection.commit()
+    connection.close()
+    
+def create_investments():
+    #Get connection
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    
+    #Create Table
+    cursor.execute('CREATE TABLE investments (ID TEXT PRIMARY KEY, UserID TEXT, HouseID TEXT, Amount TEXT)')
+    
+    #Save and close connection
+    connection.commit()
+    connection.close()
+
+def create_for_sale():
+    """
+        Creates database for shares of houses that are for sale
+    """
+    #Get connection
+    connection = create_connection('data.db')
+    cursor = connection.cursor()
+    
+    #Create Table
+    cursor.execute('CREATE TABLE selling (ID TEXT PRIMARY KEY)')
     
     #Save and close connection
     connection.commit()
